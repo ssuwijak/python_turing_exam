@@ -2,10 +2,7 @@ def calPoint(ops) -> int:
     scores = []
     sum = 0
 
-    debugMode = True
-
-    if debugMode:
-        print("0) initilize\n")
+    log("0) initilize")
 
     for idx, x in enumerate(ops):
 
@@ -17,45 +14,36 @@ def calPoint(ops) -> int:
         if int_tryparse(x):  # x.isdigit():
             flagSkip = False
             scores.append(int(x))
-            if debugMode:
-                print("{}) add {} .. {}".format(idx+1, x, scores))
+            log(f"{idx+1}) add {x} .. {scores}")
         elif x == '+':
             if score_count >= 2:
                 flagSkip = False
                 sum = int(scores[-1])+int(scores[-2])
                 scores.append(sum)
 
-                if debugMode:
-                    print("{}) add sum of last 2 scores .. {}".format(
-                        idx+1, scores))
+                log(f"{idx+1}) add sum of last 2 scores .. {scores}")
         elif x == 'D':
             if score_count >= 1:
                 flagSkip = False
                 sum = int(scores[-1]) * 2
                 scores.append(sum)
-                if debugMode:
-                    print("{}) add double of last score .. {}".format(
-                        idx+1, scores))
+                log(f"{idx+1}) add double of last score .. {scores}")
         elif x == 'C':
             if score_count >= 1:
                 flagSkip = False
                 scores.pop(score_count-1)
-                if debugMode:
-                    print("{}) remove last score .. {}".format(idx+1, scores))
+                log(f"{idx+1}) remove last score .. {scores}")
         else:
             pass
 
         if flagSkip:
-            if debugMode:
-                print("{}) ignore and skip for '{}'".format(idx+1, x))
-
+            log(f"{idx+1}) ignore and skip for '{x}'")
     sum = 0
     for x in scores:
         sum += int(x)
 
-    if debugMode:
-        print("\nraw score is {}".format(ops))
-        print("total score of {} is {}".format(scores, sum))
+    log(f"\nraw score is {ops}", True)
+    log(f"total score of {scores} is {sum}", True)
 
     return sum
 
@@ -71,8 +59,13 @@ def int_tryparse(value):
     return ret
 
 
+def log(msg, debugMode=True):
+    if debugMode:
+        print(msg)
+
+
 if __name__ == "__main__":
     line = "+ 5 -2 4 zz c d 9 + +"
     ops = line.strip().split()
     calPoint(ops)
-    #print(calPoint(ops))
+    # print(calPoint(ops))
